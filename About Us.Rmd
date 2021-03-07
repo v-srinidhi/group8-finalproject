@@ -1,0 +1,33 @@
+---
+title: "About Us"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+Description
+----
+
+## Manhar Sekhon 
+
+Bio and what you did 
+
+<br>
+
+### Srinidhi Viswanathan
+
+Bio and what you did
+<br>
+
+### Weidi Zhang
+
+Bio and what you did
+
+
+
+
+<br> 
+
+
+
