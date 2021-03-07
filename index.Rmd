@@ -10,4 +10,12 @@ output:
 
 ##### This website houses our final project for the BIS15L winter quarter class.
 
+<br>
+
+
+### **What data did we use?**
+
+#### We used the data from [the World Health Organization's COVID-19 data.](https://covid19.who.int/table)
+
+
 >Valid themes include "default", "cerulean", "journal", "flatly", "readable", "spacelab",  "united", "cosmo", "lumen", "paper", "sandstone", "simplex", and "yeti". 
