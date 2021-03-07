@@ -1,5 +1,9 @@
 ---
 title: "Our Data Analysis"
+output:
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 These are the steps we took to analyze our data.  
@@ -8,10 +12,9 @@ These are the steps we took to analyze our data.
 
 ----
 
-### ADD A TOC
-**We first took a look at the data frame**
+## **Load the data frame**
 
-##### Load the data:
+
 ```{r}
 readr::read_csv("data/WHO-COVID-19-global-data.csv")
 ```
