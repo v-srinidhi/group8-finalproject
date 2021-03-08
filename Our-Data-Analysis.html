@@ -13,12 +13,22 @@
 
 <title>Our Data Analysis</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -36,11 +46,6 @@
     </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -53,32 +58,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
 
 
 
@@ -89,10 +68,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -109,40 +84,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -170,7 +118,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -182,7 +130,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -193,10 +141,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -208,7 +169,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -334,13 +294,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -374,7 +334,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -389,10 +349,12 @@ div.tocify {
 <h2><strong>Load the libraries</strong></h2>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
-<pre><code>## v ggplot2 3.3.3     v purrr   0.3.4
-## v tibble  3.0.5     v dplyr   1.0.3
-## v tidyr   1.1.2     v stringr 1.4.0
-## v readr   1.4.0     v forcats 0.5.0</code></pre>
+<pre><code>## √ ggplot2 3.3.3     √ purrr   0.3.4
+## √ tibble  3.0.6     √ dplyr   1.0.4
+## √ tidyr   1.1.2     √ stringr 1.4.0
+## √ readr   1.4.0     √ forcats 0.5.1</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.0.4</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 4.0.4</code></pre>
 <pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
@@ -403,7 +365,7 @@ div.tocify {
 ## 
 ##     chisq.test, fisher.test</code></pre>
 <pre class="r"><code>library(here)</code></pre>
-<pre><code>## here() starts at C:/Users/manha/Desktop/group8-finalproject</code></pre>
+<pre><code>## here() starts at D:/GitHub Database/Course BIS15L/group8-finalproject</code></pre>
 <pre class="r"><code>library(naniar)
 library(skimr)</code></pre>
 <pre><code>## 
@@ -431,9 +393,25 @@ library(skimr)</code></pre>
 ##   Cumulative_deaths = col_double()
 ## )</code></pre>
 </div>
-<div id="clean-the-names" class="section level3">
-<h3>Clean the names</h3>
+<div id="clean-the-date" class="section level3">
+<h3>Clean the date</h3>
 <pre class="r"><code>covid&lt;-janitor::clean_names(covid)</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): strings not representable in native encoding will
+## be translated to UTF-8</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C4&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00D6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E4&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00F6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00DF&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E6&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00D8&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00F8&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00C5&gt;&#39; to native encoding</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): unable to translate &#39;&lt;U+00E5&gt;&#39; to native encoding</code></pre>
+<pre class="r"><code>covid$date_reported &lt;- lubridate::mdy(covid$date_reported)</code></pre>
+<pre class="r"><code>covid$date_reported &lt;- as.Date(covid$date_reported)
+covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</code></pre>
 <p><br> <br></p>
 </div>
 </div>
@@ -465,17 +443,21 @@ library(skimr)</code></pre>
 </tr>
 <tr class="even">
 <td align="left">character</td>
-<td align="left">4</td>
+<td align="left">3</td>
 </tr>
 <tr class="odd">
+<td align="left">Date</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
 <td align="left">numeric</td>
 <td align="left">4</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">________________________</td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Group variables</td>
 <td align="left">None</td>
 </tr>
@@ -497,16 +479,6 @@ library(skimr)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">date_reported</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">8</td>
-<td align="right">10</td>
-<td align="right">0</td>
-<td align="right">406</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
 <td align="left">country_code</td>
 <td align="right">812</td>
 <td align="right">0.99</td>
@@ -516,7 +488,7 @@ library(skimr)</code></pre>
 <td align="right">235</td>
 <td align="right">0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">country</td>
 <td align="right">0</td>
 <td align="right">1.00</td>
@@ -526,7 +498,7 @@ library(skimr)</code></pre>
 <td align="right">237</td>
 <td align="right">0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">who_region</td>
 <td align="right">0</td>
 <td align="right">1.00</td>
@@ -535,6 +507,31 @@ library(skimr)</code></pre>
 <td align="right">0</td>
 <td align="right">7</td>
 <td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">date_reported</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2020-01-03</td>
+<td align="left">2021-02-11</td>
+<td align="left">2020-07-23</td>
+<td align="right">406</td>
 </tr>
 </tbody>
 </table>
@@ -610,6 +607,53 @@ library(skimr)</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="cumulative-cases-on-2021-02-11" class="section level2">
+<h2><strong>Cumulative cases on 2021-02-11</strong></h2>
+<pre class="r"><code>covid %&gt;% 
+  filter(date_reported == &quot;2021-02-11&quot;) %&gt;% 
+  arrange(desc(cumulative_cases))</code></pre>
+<pre><code>## # A tibble: 237 x 8
+##    date_reported country_code country      who_region new_cases cumulative_cases
+##    &lt;date&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2021-02-11    US           United Stat~ AMRO           90930         26923756
+##  2 2021-02-11    IN           India        SEARO          12923         10871294
+##  3 2021-02-11    BR           Brazil       AMRO           51486          9599565
+##  4 2021-02-11    RU           Russian Fed~ EURO           15038          4027748
+##  5 2021-02-11    GB           The United ~ EURO           13013          3985165
+##  6 2021-02-11    FR           France       EURO           24631          3328987
+##  7 2021-02-11    ES           Spain        EURO            8298          3023601
+##  8 2021-02-11    IT           Italy        EURO           12947          2668266
+##  9 2021-02-11    TR           Turkey       EURO            8642          2556837
+## 10 2021-02-11    DE           Germany      EURO           10237          2310233
+## # ... with 227 more rows, and 2 more variables: new_deaths &lt;dbl&gt;,
+## #   cumulative_deaths &lt;dbl&gt;</code></pre>
+</div>
+<div id="cumulative-cases-in-us-from-2020-01-01-to-2021-02-11" class="section level2">
+<h2><strong>Cumulative cases in US from 2020-01-01 to 2021-02-11</strong></h2>
+<pre class="r"><code>covid%&gt;%
+  filter(country_code == &quot;US&quot;)%&gt;%
+  ggplot(aes(x = date_reported, y = cumulative_cases))+
+  geom_line(aes(group = 1))+
+  scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;)+
+  scale_y_continuous(breaks = seq(0, 30000000, by = 2500000), limits=c(0, 30000000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1)) </code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /> ## <strong>The five counties that have most cumulative cases</strong></p>
+<pre class="r"><code>covid%&gt;%
+  group_by(country)%&gt;%
+  filter(country_code == &quot;US&quot;| country_code == &quot;IN&quot;| country_code == &quot;BR&quot;| country_code == &quot;RU&quot;| country_code == &quot;GB&quot;)%&gt;%
+  ggplot(aes(x = date_reported, y = cumulative_cases, group = country, color = country))+
+  geom_line()+
+  scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;)+
+  scale_y_continuous(breaks = seq(0, 30000000, by = 2500000), limits=c(0, 30000000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1)) </code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p><font size="3" color="blue">The NA’s in this data are represented by “NA”</font></p>
 <p><a href="https://v-srinidhi.github.io/group8-finalproject/">Go Home</a></p>
 </div>
@@ -643,7 +687,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>

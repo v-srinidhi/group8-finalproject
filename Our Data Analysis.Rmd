@@ -34,9 +34,18 @@ covid <- readr::read_csv("data/WHO-COVID-19-global-data.csv")
 ```
 
 
-### Clean the names
+### Clean the date
 ```{r}
 covid<-janitor::clean_names(covid)
+```
+
+```{r}
+covid$date_reported <- lubridate::mdy(covid$date_reported)
+```
+
+```{r}
+covid$date_reported <- as.Date(covid$date_reported)
+covid$cumulative_cases <- as.numeric(as.character(covid$cumulative_cases))
 ```
 
 <br>
@@ -46,6 +55,39 @@ covid<-janitor::clean_names(covid)
 ```{r}
 skim(covid)
 ```
+## **Cumulative cases on 2021-02-11**
+```{r}
+covid %>% 
+  filter(date_reported == "2021-02-11") %>% 
+  arrange(desc(cumulative_cases))
+```
+## **Cumulative cases in US from 2020-01-01 to 2021-02-11**
+```{r}
+covid%>%
+  filter(country_code == "US")%>%
+  ggplot(aes(x = date_reported, y = cumulative_cases))+
+  geom_line(aes(group = 1))+
+  scale_x_date(date_labels = "%Y-%m-%d")+
+  scale_x_date(date_breaks = "1 month")+
+  scale_y_continuous(breaks = seq(0, 30000000, by = 2500000), limits=c(0, 30000000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1)) 
+```
+## **The five counties that have most cumulative cases**
+```{r}
+covid%>%
+  group_by(country)%>%
+  filter(country_code == "US"| country_code == "IN"| country_code == "BR"| country_code == "RU"| country_code == "GB")%>%
+  ggplot(aes(x = date_reported, y = cumulative_cases, group = country, color = country))+
+  geom_line()+
+  scale_x_date(date_labels = "%Y-%m-%d")+
+  scale_x_date(date_breaks = "1 month")+
+  scale_y_continuous(breaks = seq(0, 30000000, by = 2500000), limits=c(0, 30000000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1)) 
+```
+
+
+
+
 
 <font size="3" color="blue">The NA's in this data are represented by "NA"</font>
 
