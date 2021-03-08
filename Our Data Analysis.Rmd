@@ -11,11 +11,43 @@ These are the steps we took to analyze our data.
 
 
 ----
+## **Load the libraries**
 
-## **Load the data frame**
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+library(naniar)
+library(skimr)
+```
+
+<br>
+<br>
+
+## **Cleaning Up the Data**
+
+### Load the data frame
 
 
 ```{r}
-readr::read_csv("data/WHO-COVID-19-global-data.csv")
+covid <- readr::read_csv("data/WHO-COVID-19-global-data.csv")
 ```
 
+
+### Clean the names
+```{r}
+covid<-janitor::clean_names(covid)
+```
+
+<br>
+<br>
+
+## **Preliminary analysis**
+```{r}
+skim(covid)
+```
+
+<font size="3" color="blue">The NA's in this data are represented by "NA"</font>
+
+
+[Go Home](https://v-srinidhi.github.io/group8-finalproject/)

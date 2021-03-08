@@ -18,4 +18,10 @@ output:
 #### We used the data from [the World Health Organization's COVID-19 data.](https://covid19.who.int/table)
 
 
->Valid themes include "default", "cerulean", "journal", "flatly", "readable", "spacelab",  "united", "cosmo", "lumen", "paper", "sandstone", "simplex", and "yeti". 
+<br>
+
+<center><img src="images/Coronavirus_SARS-CoV-2.jpg" width="700px">
+
+<br>
+
+[View this project on GitHub!](https://github.com/v-srinidhi/group8-finalproject)

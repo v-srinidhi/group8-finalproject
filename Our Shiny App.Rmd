@@ -2,10 +2,86 @@
 title: "Our Shiny App"
 ---
 
-Description
+This Shiny App shows how amounts of COVID-19 cases have changed from the beginning of the pandemic to more recently.
 
 ----
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+You should only load the libraries that you will use as part of your code. I removed a few and added lubridate.
+```{r}
+library(tidyverse)
+library(janitor)
+library(shiny)
+library(shinydashboard)
+library(lubridate)
+```
+
+```{r}
+options(scipen = 999)
+```
+
+```{r}
+library(here)
+```
+
+Let's use here to import the data. You can clean the names as part of the import.
+```{r}
+covid <- read.csv("Data/WHO-COVID-19-global-data.csv") %>% clean_names()
+```
+
+Take care of the date issue first.
+```{r}
+covid$i_date_reported <- lubridate::mdy(covid$i_date_reported)
+```
+
+Convert all of the `int` columns to `dbl`
+```{r}
+covid <- covid %>% mutate_if(is.integer,as.numeric)
+```
+
+```{r}
+glimpse(covid)
+```
+
+Based on the way the data are organized, I don't think a scatterplot best represents the data. I think it would be more interesting to make a barplot where the x-axis is date and the y-axis allows users to select between the continuous variables. Then, country can be a filter variable. Have a look at the app below. I will leave the aesthetics up to you.
+```{r, eval=F, echo=T}
+covid <- covid %>% 
+  select(i_date_reported, country, cumulative_cases, cumulative_deaths)
+
+ui <- dashboardPage(skin="purple",
+  dashboardHeader(title = "COVID Cumulative Plot"),
+  dashboardSidebar(disable = T),
+  dashboardBody(
+  fluidRow(
+  box(title = "Plot Options", width = 3,
+  selectInput("fill", "Select Country", choices =unique(covid$country)),
+  radioButtons("x", "Select X Variable", choices = c("cumulative_cases", "cumulative_deaths"), selected = "cumulative_cases"),
+  box(title = "Disease Abundance", width = 9,
+  plotOutput("plot", width = "800px", height = "500px", click="plot_click"),
+  verbatimTextOutput("info")
+  ) 
+  ) 
+  )
+  ) 
+  )
+
+server <- function(input, output, session) { 
+  
+  output$plot <- renderPlot({
+    covid %>% 
+    filter(country==input$fill) %>% 
+    ggplot(aes_string(x = "i_date_reported", y = input$x, fill=input$x)) + 
+    geom_col()
+  })
+}
+
+shinyApp(ui, server)
+```
 
 
 
