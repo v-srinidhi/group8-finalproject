@@ -786,6 +786,22 @@ arrange(desc(new_cases))</code></pre>
 <p><font size="3" color="blue">This plot shows the number of new cases reported on February 11, 2021 across the countries that reported the most cases.</font></p>
 <p><br> <br></p>
 </div>
+<div id="comparing-new-cases-in-different-who-regions" class="section level2">
+<h2><strong>Comparing New Cases in different WHO regions</strong></h2>
+<p><font size="3" color="blue">TThe WHO divides the world into 6 regions: African Region (AFRO), Region of the Americas (AMRO), South-East Asian Region (SEAR), the European Region (EURO), the Eastern Mediterranean Region (EMRO), and the Western Pacific Region (WPRO).</font></p>
+<pre class="r"><code>covid%&gt;%
+  group_by(who_region)%&gt;%
+  filter(who_region!=&quot;Other&quot;)%&gt;%
+  select(date_reported, new_cases, who_region)%&gt;%
+  ggplot(aes(x=who_region, y=new_cases, fill=who_region))+
+  geom_col()+scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Reported cases by WHO region as of 2/11/2021 &quot;,
+       x=&quot;WHO Region&quot;,
+       y=&quot;New Cases&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><br> <br></p>
+</div>
 <div id="countries-with-the-highest-amount-of-new-deaths" class="section level2">
 <h2><strong>Countries with the highest amount of new deaths</strong></h2>
 <pre class="r"><code>covid%&gt;%
@@ -820,8 +836,23 @@ arrange(desc(new_deaths))</code></pre>
        x=&quot;Date&quot;,
        y=&quot;New Deaths&quot;)+
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p><font size="3" color="blue">This plot shows the number of new deaths reported on February 11, 2021 across the countries that reported the most deaths</font></p>
+<p><br> <br></p>
+</div>
+<div id="comparing-new-deaths-by-different-who-regions" class="section level2">
+<h2><strong>Comparing New Deaths by different WHO regions</strong></h2>
+<pre class="r"><code>covid%&gt;%
+  group_by(who_region)%&gt;%
+  filter(who_region!=&quot;Other&quot;)%&gt;%
+  select(date_reported, new_deaths, who_region)%&gt;%
+  ggplot(aes(x=who_region, y=new_deaths, fill=who_region))+
+  geom_col()+scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Reported deaths by WHO region as of February 11 2021&quot;,
+       x=&quot;WHO region&quot;,
+       y=&quot;New Deaths&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p><br> <br> <br> <a href="https://v-srinidhi.github.io/group8-finalproject/">Go Home</a></p>
 </div>
 
