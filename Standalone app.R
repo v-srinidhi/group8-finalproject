@@ -15,8 +15,8 @@ covid <- covid %>% mutate_if(is.integer,as.numeric)
 covid <- covid %>% 
   select(i_date_reported, country, cumulative_cases, cumulative_deaths)
 
-ui <- dashboardPage(skin="purple",
-                    dashboardHeader(title = "COVID Cumulative Plot"),
+ui <- dashboardPage(skin="blue",
+                    dashboardHeader(title = "COVID-19 Information"),
                     dashboardSidebar(disable = T),
                     dashboardBody(
                       fluidRow(
@@ -38,7 +38,8 @@ server <- function(input, output, session) {
     covid %>% 
       filter(country==input$fill) %>% 
       ggplot(aes_string(x = "i_date_reported", y = input$x, fill=input$x)) + 
-      geom_col()
+      geom_col()+
+      labs(x="Date reported")
   })
 }
 
