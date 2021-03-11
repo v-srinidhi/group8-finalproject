@@ -60,8 +60,9 @@ skim(covid)
 <br>
 <br>
 
-## **Which countries had the most cumulative cases?**
-### This shows the data from the most recent data collection date: 02-11-2021.
+## **Cumulative Cases**
+### Which countries had the most cumulative cases?
+<font size="3" color="blue">This shows the data from the most recent data collection date: 02-11-2021..</font>
 ```{r}
 covid %>% 
   filter(date_reported == "2021-02-11") %>% 
@@ -74,7 +75,7 @@ covid %>%
 <br>
 
 
-## **Cumulative cases in US over time**
+### Cumulative cases in US over time
 ```{r}
 covid%>%
   filter(country_code == "US")%>%
@@ -94,7 +95,7 @@ covid%>%
 <br>
 <br>
 
-## **Cumulative cases in the world over time**
+### Cumulative cases in the world over time
 ```{r}
 covid%>%
   group_by(country)%>%
@@ -115,35 +116,7 @@ covid%>%
 <br>
 <br>
 
-## **Which countries had the most deaths?**
-```{r}
-covid %>% 
-  filter(date_reported== "2021-02-11") %>% 
-  arrange(desc(cumulative_cases))
-```
-<font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, India, Brazil, the Russian Federation, and the United Kingdom.</font>
-
-<br>
-<br>
-
-## **Cumulative deaths over time**
-```{r}
-covid%>%
-  group_by(country)%>%
-  filter(country_code == "US"| country_code == "IN"| country_code == "BR"| country_code == "RU"| country_code == "GB")%>%
-  ggplot(aes(x = date_reported, y = cumulative_deaths, group = country, color = country))+
-  geom_line()+
-  scale_x_date(date_labels = "%Y-%m-%d")+
-  scale_x_date(date_breaks = "1 month")+
-  scale_y_continuous(breaks = seq(0, 300000, by = 25000), limits=c(0, 300000))+
-  theme(axis.text.x=element_text(angle=45, hjust=1))+
-   scale_color_brewer(palette = "Set2")+
-  labs(title="Cumulative Deaths over Time", x="Date Reported", y="Cumulative Deaths")+
-  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))
-```
-
-
-## **Which country's cumulative cases are growing the fastest?**
+### Which country's cumulative cases are growing the fastest?
 
 <font size="3" color="blue">We did this by subtracting the amount of cases on 11-11-2020 from the amount of cases on 2-11-2021. This data is for the last 3 months.</font>
 ```{r}
@@ -161,7 +134,7 @@ covid%>%
 <br>
 <br>
 
-## **Comparing the cumulative cases through faceting**
+### Comparing the cumulative cases through faceting
 ```{r}
 covid2 <- covid%>%
   filter(country == "Uruguay"| country == "Latvia" | country == "Estonia" | country == "Lithuania" | country == "Thailand")%>%
@@ -183,7 +156,39 @@ covid2 + facet_wrap(~country)
 <br>
 <br>
 
-## **Countries with the highest amount of new cases**
+## **Cumulative Deaths**
+### Which countries had the most deaths?
+```{r}
+covid %>% 
+  filter(date_reported== "2021-02-11") %>% 
+  arrange(desc(cumulative_cases))
+```
+<font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, India, Brazil, the Russian Federation, and the United Kingdom.</font>
+
+<br>
+<br>
+
+### Cumulative deaths over time
+```{r}
+covid%>%
+  group_by(country)%>%
+  filter(country_code == "US"| country_code == "IN"| country_code == "BR"| country_code == "RU"| country_code == "GB")%>%
+  ggplot(aes(x = date_reported, y = cumulative_deaths, group = country, color = country))+
+  geom_line()+
+  scale_x_date(date_labels = "%Y-%m-%d")+
+  scale_x_date(date_breaks = "1 month")+
+  scale_y_continuous(breaks = seq(0, 300000, by = 25000), limits=c(0, 300000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1))+
+   scale_color_brewer(palette = "Set2")+
+  labs(title="Cumulative Deaths over Time", x="Date Reported", y="Cumulative Deaths")+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))
+```
+
+<br>
+<br>
+
+## **New Cases**
+### Countries with the highest amount of new cases
 <font size="3" color="blue">This is data that was reported on 02-11-2021.</font> 
 ```{r}
 covid%>%
@@ -196,7 +201,7 @@ arrange(desc(new_cases))
 <br>
 <br>
 
-## **How New Cases on 02-11-2021 Compare in the Top 5 Countries**
+### How New Cases on 02-11-2021 Compare in the Top 5 Countries
 ```{r}
 covid%>%
   filter(country=="United States of America"| country=="Brazil"| country=="Russian Federation" |country=="The United Kingdom"| country=="France")%>%
@@ -214,7 +219,7 @@ covid%>%
 <br>
 <br>
 
-## **Comparing New Cases in different WHO regions**
+### Comparing New Cases in different WHO regions
 <font size="3" color="blue">TThe WHO divides the world into 6 regions: African Region (AFRO), Region of the Americas (AMRO), South-East Asian Region (SEAR), the European Region (EURO), the Eastern Mediterranean Region (EMRO), and the Western Pacific Region (WPRO).</font>
 
 ```{r}
@@ -233,7 +238,7 @@ covid%>%
 <br>
 <br>
 
-## **Countries with the highest amount of new deaths**
+### Countries with the highest amount of new deaths
 
 ```{r}
 covid%>%
@@ -247,7 +252,8 @@ arrange(desc(new_deaths))
 <br>
 <br>
 
-## **How New Deaths on 02-11-2021 Compare in the Top 5 Countries**
+## **New Deaths**
+### How New Deaths on 02-11-2021 Compare in the Top 5 Countries
 
 ```{r}
 covid%>%
@@ -266,7 +272,7 @@ covid%>%
 <br>
 <br>
 
-## **Comparing New Deaths by different WHO regions**
+### Comparing New Deaths by different WHO regions
 
 ```{r}
 covid%>%
