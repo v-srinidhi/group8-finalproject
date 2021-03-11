@@ -161,9 +161,9 @@ covid2 + facet_wrap(~country)
 ```{r}
 covid %>% 
   filter(date_reported== "2021-02-11") %>% 
-  arrange(desc(cumulative_cases))
+  arrange(desc(cumulative_deaths))
 ```
-<font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, India, Brazil, the Russian Federation, and the United Kingdom.</font>
+<font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, Brazil, Mexico, India, and the United Kingdom.</font>
 
 <br>
 <br>
@@ -172,7 +172,7 @@ covid %>%
 ```{r}
 covid%>%
   group_by(country)%>%
-  filter(country_code == "US"| country_code == "IN"| country_code == "BR"| country_code == "RU"| country_code == "GB")%>%
+  filter(country_code == "US"| country_code == "BR"| country_code == "MX"| country_code == "IN"| country_code == "GB")%>%
   ggplot(aes(x = date_reported, y = cumulative_deaths, group = country, color = country))+
   geom_line()+
   scale_x_date(date_labels = "%Y-%m-%d")+

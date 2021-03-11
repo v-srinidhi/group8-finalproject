@@ -712,30 +712,30 @@ covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</c
 <h3>Which countries had the most deaths?</h3>
 <pre class="r"><code>covid %&gt;% 
   filter(date_reported== &quot;2021-02-11&quot;) %&gt;% 
-  arrange(desc(cumulative_cases))</code></pre>
+  arrange(desc(cumulative_deaths))</code></pre>
 <pre><code>## # A tibble: 237 x 8
 ##    date_reported country_code country      who_region new_cases cumulative_cases
 ##    &lt;date&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;
 ##  1 2021-02-11    US           United Stat… AMRO           90930         26923756
-##  2 2021-02-11    IN           India        SEARO          12923         10871294
-##  3 2021-02-11    BR           Brazil       AMRO           51486          9599565
-##  4 2021-02-11    RU           Russian Fed… EURO           15038          4027748
+##  2 2021-02-11    BR           Brazil       AMRO           51486          9599565
+##  3 2021-02-11    MX           Mexico       AMRO           10738          1946751
+##  4 2021-02-11    IN           India        SEARO          12923         10871294
 ##  5 2021-02-11    GB           The United … EURO           13013          3985165
-##  6 2021-02-11    FR           France       EURO           24631          3328987
-##  7 2021-02-11    ES           Spain        EURO            8298          3023601
-##  8 2021-02-11    IT           Italy        EURO           12947          2668266
-##  9 2021-02-11    TR           Turkey       EURO            8642          2556837
+##  6 2021-02-11    IT           Italy        EURO           12947          2668266
+##  7 2021-02-11    FR           France       EURO           24631          3328987
+##  8 2021-02-11    RU           Russian Fed… EURO           15038          4027748
+##  9 2021-02-11    ES           Spain        EURO            8298          3023601
 ## 10 2021-02-11    DE           Germany      EURO           10237          2310233
 ## # … with 227 more rows, and 2 more variables: new_deaths &lt;dbl&gt;,
 ## #   cumulative_deaths &lt;dbl&gt;</code></pre>
-<p><font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, India, Brazil, the Russian Federation, and the United Kingdom.</font></p>
+<p><font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, Brazil, Mexico, India, and the United Kingdom.</font></p>
 <p><br> <br></p>
 </div>
 <div id="cumulative-deaths-over-time" class="section level3">
 <h3>Cumulative deaths over time</h3>
 <pre class="r"><code>covid%&gt;%
   group_by(country)%&gt;%
-  filter(country_code == &quot;US&quot;| country_code == &quot;IN&quot;| country_code == &quot;BR&quot;| country_code == &quot;RU&quot;| country_code == &quot;GB&quot;)%&gt;%
+  filter(country_code == &quot;US&quot;| country_code == &quot;BR&quot;| country_code == &quot;MX&quot;| country_code == &quot;IN&quot;| country_code == &quot;GB&quot;)%&gt;%
   ggplot(aes(x = date_reported, y = cumulative_deaths, group = country, color = country))+
   geom_line()+
   scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
