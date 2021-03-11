@@ -6,9 +6,7 @@ This Shiny App shows how amounts of COVID-19 cases have changed from the beginni
 
 ----
 
-Here is a link to our Shiny App!
 
-<br>
 
 This is the code we used:
 ```{r}
