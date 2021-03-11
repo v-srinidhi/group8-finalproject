@@ -224,6 +224,7 @@ covid%>%
 <font size="3" color="blue">TThe WHO divides the world into 6 regions: African Region (AFRO), Region of the Americas (AMRO), South-East Asian Region (SEAR), the European Region (EURO), the Eastern Mediterranean Region (EMRO), and the Western Pacific Region (WPRO).</font>
 
 ```{r}
+options(scipen=999) 
 covid%>%
   group_by(who_region)%>%
   filter(who_region!="Other")%>%
@@ -257,6 +258,7 @@ arrange(desc(new_deaths))
 ### How New Deaths on 02-11-2021 Compare in the Top 5 Countries
 
 ```{r}
+options(scipen=999) 
 covid%>%
   filter(country=="United States of America"| country=="Mexico"| country=="Brazil" |country=="The United Kingdom"| country=="Germany")%>%
   filter(date_reported=="2021-02-11")%>%
@@ -276,6 +278,7 @@ covid%>%
 ### Comparing New Deaths by different WHO regions
 
 ```{r}
+options(scipen=999) 
 covid%>%
   group_by(who_region)%>%
   filter(who_region!="Other")%>%

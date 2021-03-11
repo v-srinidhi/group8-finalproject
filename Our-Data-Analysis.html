@@ -796,7 +796,8 @@ arrange(desc(new_cases))</code></pre>
 <div id="comparing-new-cases-in-different-who-regions" class="section level3">
 <h3>Comparing New Cases in different WHO regions</h3>
 <p><font size="3" color="blue">TThe WHO divides the world into 6 regions: African Region (AFRO), Region of the Americas (AMRO), South-East Asian Region (SEAR), the European Region (EURO), the Eastern Mediterranean Region (EMRO), and the Western Pacific Region (WPRO).</font></p>
-<pre class="r"><code>covid%&gt;%
+<pre class="r"><code>options(scipen=999) 
+covid%&gt;%
   group_by(who_region)%&gt;%
   filter(who_region!=&quot;Other&quot;)%&gt;%
   select(date_reported, new_cases, who_region)%&gt;%
@@ -837,7 +838,8 @@ arrange(desc(new_deaths))</code></pre>
 <h2><strong>New Deaths</strong></h2>
 <div id="how-new-deaths-on-02-11-2021-compare-in-the-top-5-countries" class="section level3">
 <h3>How New Deaths on 02-11-2021 Compare in the Top 5 Countries</h3>
-<pre class="r"><code>covid%&gt;%
+<pre class="r"><code>options(scipen=999) 
+covid%&gt;%
   filter(country==&quot;United States of America&quot;| country==&quot;Mexico&quot;| country==&quot;Brazil&quot; |country==&quot;The United Kingdom&quot;| country==&quot;Germany&quot;)%&gt;%
   filter(date_reported==&quot;2021-02-11&quot;)%&gt;%
   ggplot(aes(x=date_reported, y=new_deaths, group=country, fill=country))+
@@ -852,7 +854,8 @@ arrange(desc(new_deaths))</code></pre>
 </div>
 <div id="comparing-new-deaths-by-different-who-regions" class="section level3">
 <h3>Comparing New Deaths by different WHO regions</h3>
-<pre class="r"><code>covid%&gt;%
+<pre class="r"><code>options(scipen=999) 
+covid%&gt;%
   group_by(who_region)%&gt;%
   filter(who_region!=&quot;Other&quot;)%&gt;%
   select(date_reported, new_deaths, who_region)%&gt;%

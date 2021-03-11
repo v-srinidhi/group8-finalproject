@@ -451,6 +451,7 @@ covid%>%
 
 
 ```r
+options(scipen=999) 
 covid%>%
   group_by(who_region)%>%
   filter(who_region!="Other")%>%
@@ -505,6 +506,7 @@ arrange(desc(new_deaths))
 
 
 ```r
+options(scipen=999) 
 covid%>%
   filter(country=="United States of America"| country=="Mexico"| country=="Brazil" |country=="The United Kingdom"| country=="Germany")%>%
   filter(date_reported=="2021-02-11")%>%
@@ -527,6 +529,7 @@ covid%>%
 
 
 ```r
+options(scipen=999) 
 covid%>%
   group_by(who_region)%>%
   filter(who_region!="Other")%>%
