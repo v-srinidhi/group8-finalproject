@@ -2,8 +2,9 @@
 title: "Group 8's BIS15L Final Project"
 author: Srinidhi Viswanathan, Manhar Sekhon, Weidi Zhang
 output:
-  html_document:
+  html_document: 
     fig_width: 1
+    keep_md: yes
 ---
 
 ----

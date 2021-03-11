@@ -1,9 +1,10 @@
 ---
 title: "Our Data Analysis"
 output:
-  html_document:
-    toc: true
-    toc_float: true
+  html_document: 
+    toc: yes
+    toc_float: yes
+    keep_md: yes
 ---
 
 These are the steps we took to analyze our data.  

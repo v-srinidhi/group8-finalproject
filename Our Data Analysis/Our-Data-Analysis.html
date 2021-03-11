@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Our Data Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">HOME</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Our-Data-Analysis.html">Our Data Analysis</a>
+</li>
+<li>
+  <a href="Our-Shiny-App.html">Our Shiny App</a>
+</li>
+<li>
+  <a href="About-Us.html">About Us</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Our Data Analysis</h1>
+
+</div>
+
+
+<p>These are the steps we took to analyze our data.</p>
+<hr />
+<div id="load-the-libraries" class="section level2">
+<h2><strong>Load the libraries</strong></h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.1.0     ✓ dplyr   1.0.4
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(janitor)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<pre class="r"><code>library(here)</code></pre>
+<pre><code>## here() starts at /Users/srinidhi/Desktop/rmarkdown-website-tutorial</code></pre>
+<pre class="r"><code>library(naniar)
+library(skimr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;skimr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:naniar&#39;:
+## 
+##     n_complete</code></pre>
+<p><br> <br></p>
+</div>
+<div id="cleaning-up-the-data" class="section level2">
+<h2><strong>Cleaning Up the Data</strong></h2>
+<div id="load-the-data-frame" class="section level3">
+<h3>Load the data frame</h3>
+<pre class="r"><code>covid &lt;- readr::read_csv(&quot;data/WHO-COVID-19-global-data.csv&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   Date_reported = col_character(),
+##   Country_code = col_character(),
+##   Country = col_character(),
+##   WHO_region = col_character(),
+##   New_cases = col_double(),
+##   Cumulative_cases = col_double(),
+##   New_deaths = col_double(),
+##   Cumulative_deaths = col_double()
+## )</code></pre>
+</div>
+<div id="clean-the-data-up" class="section level3">
+<h3>Clean the data up</h3>
+<pre class="r"><code>covid&lt;-janitor::clean_names(covid)</code></pre>
+<pre class="r"><code>covid$date_reported &lt;- lubridate::mdy(covid$date_reported)</code></pre>
+<pre class="r"><code>covid$date_reported &lt;- as.Date(covid$date_reported)
+covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</code></pre>
+<p><br> <br></p>
+</div>
+</div>
+<div id="preliminary-analysis" class="section level2">
+<h2><strong>Preliminary analysis</strong></h2>
+<pre class="r"><code>skim(covid)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">covid</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">96222</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">8</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">country_code</td>
+<td align="right">812</td>
+<td align="right">0.99</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">235</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">country</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">56</td>
+<td align="right">0</td>
+<td align="right">237</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">who_region</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: Date</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">date_reported</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">2020-01-03</td>
+<td align="left">2021-02-11</td>
+<td align="left">2020-07-23</td>
+<td align="right">406</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">new_cases</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1111.92</td>
+<td align="right">7525.43</td>
+<td align="right">-32952</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">172.00</td>
+<td align="right">402270</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">cumulative_cases</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">120688.43</td>
+<td align="right">827691.39</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">864</td>
+<td align="right">16985.75</td>
+<td align="right">26923756</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">new_deaths</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">24.39</td>
+<td align="right">140.32</td>
+<td align="right">-514</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3.00</td>
+<td align="right">6409</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">cumulative_deaths</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3202.05</td>
+<td align="right">17806.41</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">14</td>
+<td align="right">316.75</td>
+<td align="right">464412</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+<p><font size="3" color="lightblue4">The NA’s in this data are represented by “NA” and “######”</font></p>
+<p><br> <br></p>
+</div>
+<div id="cumulative-cases" class="section level2">
+<h2><strong>Cumulative Cases</strong></h2>
+<div id="which-countries-had-the-most-cumulative-cases" class="section level3">
+<h3>Which countries had the most cumulative cases?</h3>
+<p><font size="3" color="blue">This shows the data from the most recent data collection date: 02-11-2021..</font></p>
+<pre class="r"><code>covid %&gt;% 
+  filter(date_reported == &quot;2021-02-11&quot;) %&gt;% 
+  arrange(desc(cumulative_cases))</code></pre>
+<pre><code>## # A tibble: 237 x 8
+##    date_reported country_code country      who_region new_cases cumulative_cases
+##    &lt;date&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2021-02-11    US           United Stat… AMRO           90930         26923756
+##  2 2021-02-11    IN           India        SEARO          12923         10871294
+##  3 2021-02-11    BR           Brazil       AMRO           51486          9599565
+##  4 2021-02-11    RU           Russian Fed… EURO           15038          4027748
+##  5 2021-02-11    GB           The United … EURO           13013          3985165
+##  6 2021-02-11    FR           France       EURO           24631          3328987
+##  7 2021-02-11    ES           Spain        EURO            8298          3023601
+##  8 2021-02-11    IT           Italy        EURO           12947          2668266
+##  9 2021-02-11    TR           Turkey       EURO            8642          2556837
+## 10 2021-02-11    DE           Germany      EURO           10237          2310233
+## # … with 227 more rows, and 2 more variables: new_deaths &lt;dbl&gt;,
+## #   cumulative_deaths &lt;dbl&gt;</code></pre>
+<p><font size="3" color="blue">The countries that have the most cumulative cases in the world are: the United States, India, Brazil, the Russian Federation, and the United Kingdom.</font></p>
+<p><br> <br></p>
+</div>
+<div id="cumulative-cases-in-us-over-time" class="section level3">
+<h3>Cumulative cases in US over time</h3>
+<pre class="r"><code>covid%&gt;%
+  filter(country_code == &quot;US&quot;)%&gt;%
+  ggplot(aes(x = date_reported, y = cumulative_cases))+
+  geom_line(aes(group = 1))+
+  scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;)+
+  scale_y_continuous(breaks = seq(0, 30000000, by = 2500000), limits=c(0, 30000000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1)) +
+  scale_color_brewer(palette = &quot;Set2&quot;)+
+  labs(title=&quot;Cumulative Cases over Time in the US&quot;, x=&quot;Date Reported&quot;, y=&quot;Cumulative Cases&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-8-1.png" /><!-- --></p>
+<p><font size="3" color="blue">The United States had the most cumulative cases, so we decided to plot the number of cases in the US from the beginning of the data collection (01-01-2020) to the most recent data we have (02-11-2021).</font></p>
+<p><br> <br></p>
+</div>
+<div id="cumulative-cases-in-the-world-over-time" class="section level3">
+<h3>Cumulative cases in the world over time</h3>
+<pre class="r"><code>covid%&gt;%
+  group_by(country)%&gt;%
+  filter(country_code == &quot;US&quot;| country_code == &quot;IN&quot;| country_code == &quot;BR&quot;| country_code == &quot;RU&quot;| country_code == &quot;GB&quot;)%&gt;%
+  ggplot(aes(x = date_reported, y = cumulative_cases, group = country, color = country))+
+  geom_line()+
+  scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;)+
+  scale_y_continuous(breaks = seq(0, 30000000, by = 2500000), limits=c(0, 30000000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1)) +
+  scale_color_brewer(palette = &quot;Set2&quot;)+
+  labs(title=&quot;Cumulative Cases over Time&quot;, x=&quot;Date Reported&quot;, y=&quot;Cumulative Cases&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-9-1.png" /><!-- --></p>
+<p><font size="3" color="blue">This plot shows us how the cumulative cases have increased for the top 5 countries with the most cumulative cases.</font></p>
+<p><br> <br></p>
+</div>
+<div id="which-countrys-cumulative-cases-are-growing-the-fastest" class="section level3">
+<h3>Which country’s cumulative cases are growing the fastest?</h3>
+<p><font size="3" color="blue">We did this by subtracting the amount of cases on 11-11-2020 from the amount of cases on 2-11-2021. This data is for the last 3 months.</font></p>
+<pre class="r"><code>covid%&gt;%
+  group_by(country)%&gt;%
+  filter(cumulative_cases &gt; 1000)%&gt;%
+  filter(date_reported == &quot;2020-11-11&quot; | date_reported == &quot;2021-2-11&quot;)%&gt;%
+  arrange(date_reported)%&gt;%
+  mutate(inc_rate =(cumulative_cases - lag(cumulative_cases)) / lag(cumulative_cases))%&gt;%
+  arrange(desc(inc_rate))</code></pre>
+<pre><code>## # A tibble: 356 x 9
+## # Groups:   country [186]
+##    date_reported country_code country   who_region new_cases cumulative_cases
+##    &lt;date&gt;        &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2021-02-11    UY           Uruguay   AMRO             503            46153
+##  2 2021-02-11    LV           Latvia    EURO             990            73859
+##  3 2021-02-11    EE           Estonia   EURO             675            50280
+##  4 2021-02-11    LT           Lithuania EURO            1067           189058
+##  5 2021-02-11    TH           Thailand  SEARO            201            24104
+##  6 2021-02-11    RS           Serbia    EURO            2088           413943
+##  7 2021-02-11    MY           Malaysia  WPRO            3288           251604
+##  8 2021-02-11    CY           Cyprus    EURO             113            32072
+##  9 2021-02-11    LS           Lesotho   AFRO              86             9804
+## 10 2021-02-11    LK           Sri Lanka SEARO            963            72174
+## # … with 346 more rows, and 3 more variables: new_deaths &lt;dbl&gt;,
+## #   cumulative_deaths &lt;dbl&gt;, inc_rate &lt;dbl&gt;</code></pre>
+<p><font size="3" color="blue">In the last 3 months, the countries with the fastest growth of cumulative cases are: Uruguay, Latvia, Estonia, Lithuania, and Thailand.</font></p>
+<p><br> <br></p>
+</div>
+<div id="comparing-the-cumulative-cases-through-faceting" class="section level3">
+<h3>Comparing the cumulative cases through faceting</h3>
+<pre class="r"><code>covid2 &lt;- covid%&gt;%
+  filter(country == &quot;Uruguay&quot;| country == &quot;Latvia&quot; | country == &quot;Estonia&quot; | country == &quot;Lithuania&quot; | country == &quot;Thailand&quot;)%&gt;%
+  filter(date_reported &gt; &quot;2020-11-11&quot; , date_reported &lt; &quot;2021-2-11&quot;)%&gt;%
+  ggplot(aes(x = date_reported, y = cumulative_cases))+
+  geom_line()+
+  scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
+  theme(axis.text.x=element_text(angle=45, hjust=1))+
+  scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Cumulative Cases in the Last 3 Months&quot;, x = &quot;Date Reported&quot;, y = &quot;Cumulative Cases&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<pre class="r"><code>covid2 + facet_wrap(~country)</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-12-1.png" /><!-- --></p>
+<p><font size="3" color="blue">This plot shows us how the cumulative cases have increased for the countries that have increased in cumulative cases the fastest. We analyzed the last 3 months.</font></p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="cumulative-deaths" class="section level2">
+<h2><strong>Cumulative Deaths</strong></h2>
+<div id="which-countries-had-the-most-deaths" class="section level3">
+<h3>Which countries had the most deaths?</h3>
+<pre class="r"><code>covid %&gt;% 
+  filter(date_reported== &quot;2021-02-11&quot;) %&gt;% 
+  arrange(desc(cumulative_deaths))</code></pre>
+<pre><code>## # A tibble: 237 x 8
+##    date_reported country_code country      who_region new_cases cumulative_cases
+##    &lt;date&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;
+##  1 2021-02-11    US           United Stat… AMRO           90930         26923756
+##  2 2021-02-11    BR           Brazil       AMRO           51486          9599565
+##  3 2021-02-11    MX           Mexico       AMRO           10738          1946751
+##  4 2021-02-11    IN           India        SEARO          12923         10871294
+##  5 2021-02-11    GB           The United … EURO           13013          3985165
+##  6 2021-02-11    IT           Italy        EURO           12947          2668266
+##  7 2021-02-11    FR           France       EURO           24631          3328987
+##  8 2021-02-11    RU           Russian Fed… EURO           15038          4027748
+##  9 2021-02-11    ES           Spain        EURO            8298          3023601
+## 10 2021-02-11    DE           Germany      EURO           10237          2310233
+## # … with 227 more rows, and 2 more variables: new_deaths &lt;dbl&gt;,
+## #   cumulative_deaths &lt;dbl&gt;</code></pre>
+<p><font size="3" color="blue">The countries with the highest cumulative deaths are: the United States, Brazil, Mexico, India, and the United Kingdom.</font></p>
+<p><br> <br></p>
+</div>
+<div id="cumulative-deaths-over-time" class="section level3">
+<h3>Cumulative deaths over time</h3>
+<pre class="r"><code>covid%&gt;%
+  group_by(country)%&gt;%
+  filter(country_code == &quot;US&quot;| country_code == &quot;BR&quot;| country_code == &quot;MX&quot;| country_code == &quot;IN&quot;| country_code == &quot;GB&quot;)%&gt;%
+  ggplot(aes(x = date_reported, y = cumulative_deaths, group = country, color = country))+
+  geom_line()+
+  scale_x_date(date_labels = &quot;%Y-%m-%d&quot;)+
+  scale_x_date(date_breaks = &quot;1 month&quot;)+
+  scale_y_continuous(breaks = seq(0, 300000, by = 25000), limits=c(0, 300000))+
+  theme(axis.text.x=element_text(angle=45, hjust=1))+
+   scale_color_brewer(palette = &quot;Set2&quot;)+
+  labs(title=&quot;Cumulative Deaths over Time&quot;, x=&quot;Date Reported&quot;, y=&quot;Cumulative Deaths&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
+<pre><code>## Warning: Removed 57 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-14-1.png" /><!-- --></p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="new-cases" class="section level2">
+<h2><strong>New Cases</strong></h2>
+<div id="countries-with-the-highest-amount-of-new-cases" class="section level3">
+<h3>Countries with the highest amount of new cases</h3>
+<p><font size="3" color="blue">This is data that was reported on 02-11-2021.</font></p>
+<pre class="r"><code>covid%&gt;%
+  select(date_reported, country, new_cases)%&gt;%
+  filter(date_reported==&quot;2021-02-11&quot;)%&gt;%
+arrange(desc(new_cases))</code></pre>
+<pre><code>## # A tibble: 237 x 3
+##    date_reported country                  new_cases
+##    &lt;date&gt;        &lt;chr&gt;                        &lt;dbl&gt;
+##  1 2021-02-11    United States of America     90930
+##  2 2021-02-11    Brazil                       51486
+##  3 2021-02-11    France                       24631
+##  4 2021-02-11    Russian Federation           15038
+##  5 2021-02-11    The United Kingdom           13013
+##  6 2021-02-11    Italy                        12947
+##  7 2021-02-11    India                        12923
+##  8 2021-02-11    Mexico                       10738
+##  9 2021-02-11    Germany                      10237
+## 10 2021-02-11    Czechia                       9537
+## # … with 227 more rows</code></pre>
+<p><font size="3" color="blue">The top 5 countries are : the United States, Brazil, France, the Russian Federation, and the United Kingdom.</font></p>
+<p><br> <br></p>
+</div>
+<div id="how-new-cases-on-02-11-2021-compare-in-the-top-5-countries" class="section level3">
+<h3>How New Cases on 02-11-2021 Compare in the Top 5 Countries</h3>
+<pre class="r"><code>covid%&gt;%
+  filter(country==&quot;United States of America&quot;| country==&quot;Brazil&quot;| country==&quot;Russian Federation&quot; |country==&quot;The United Kingdom&quot;| country==&quot;France&quot;)%&gt;%
+  filter(date_reported==&quot;2021-02-11&quot;)%&gt;%
+  ggplot(aes(x=date_reported, y=new_cases, group=country, fill=country))+
+  geom_col(position=&quot;dodge&quot;)+scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Countries with highest reported new cases&quot;,
+       x=&quot;Date&quot;,
+       y=&quot;New Cases&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-16-1.png" /><!-- --></p>
+<p><font size="3" color="blue">This plot shows the number of new cases reported on February 11, 2021 across the countries that reported the most cases.</font></p>
+<p><br> <br></p>
+</div>
+<div id="comparing-new-cases-in-different-who-regions" class="section level3">
+<h3>Comparing New Cases in different WHO regions</h3>
+<p><font size="3" color="blue">TThe WHO divides the world into 6 regions: African Region (AFRO), Region of the Americas (AMRO), South-East Asian Region (SEAR), the European Region (EURO), the Eastern Mediterranean Region (EMRO), and the Western Pacific Region (WPRO).</font></p>
+<pre class="r"><code>covid%&gt;%
+  group_by(who_region)%&gt;%
+  filter(who_region!=&quot;Other&quot;)%&gt;%
+  select(date_reported, new_cases, who_region)%&gt;%
+  ggplot(aes(x=who_region, y=new_cases, fill=who_region))+
+  geom_col()+scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Reported cases by WHO region as of 2/11/2021 &quot;,
+       x=&quot;WHO Region&quot;,
+       y=&quot;New Cases&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-17-1.png" /><!-- --></p>
+<p><br> <br></p>
+</div>
+<div id="countries-with-the-highest-amount-of-new-deaths" class="section level3">
+<h3>Countries with the highest amount of new deaths</h3>
+<pre class="r"><code>covid%&gt;%
+  select(date_reported, country, new_deaths)%&gt;%
+  filter(date_reported==&quot;2021-02-11&quot;)%&gt;%
+arrange(desc(new_deaths))</code></pre>
+<pre><code>## # A tibble: 237 x 3
+##    date_reported country                  new_deaths
+##    &lt;date&gt;        &lt;chr&gt;                         &lt;dbl&gt;
+##  1 2021-02-11    United States of America       2802
+##  2 2021-02-11    Mexico                         1701
+##  3 2021-02-11    Brazil                         1350
+##  4 2021-02-11    The United Kingdom             1001
+##  5 2021-02-11    Germany                         666
+##  6 2021-02-11    Russian Federation              553
+##  7 2021-02-11    Poland                          456
+##  8 2021-02-11    Italy                           336
+##  9 2021-02-11    France                          295
+## 10 2021-02-11    South Africa                    276
+## # … with 227 more rows</code></pre>
+<p><font size="3" color="blue">The top 5 countries are : the United States, Mexico, Brazil, the United Kingdom, and Germany.</font></p>
+<p><br> <br></p>
+</div>
+</div>
+<div id="new-deaths" class="section level2">
+<h2><strong>New Deaths</strong></h2>
+<div id="how-new-deaths-on-02-11-2021-compare-in-the-top-5-countries" class="section level3">
+<h3>How New Deaths on 02-11-2021 Compare in the Top 5 Countries</h3>
+<pre class="r"><code>covid%&gt;%
+  filter(country==&quot;United States of America&quot;| country==&quot;Mexico&quot;| country==&quot;Brazil&quot; |country==&quot;The United Kingdom&quot;| country==&quot;Germany&quot;)%&gt;%
+  filter(date_reported==&quot;2021-02-11&quot;)%&gt;%
+  ggplot(aes(x=date_reported, y=new_deaths, group=country, fill=country))+
+  geom_col(position=&quot;dodge&quot;)+scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Countries with highest reported new deaths&quot;,
+       x=&quot;Date&quot;,
+       y=&quot;New Deaths&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-19-1.png" /><!-- --></p>
+<p><font size="3" color="blue">This plot shows the number of new deaths reported on February 11, 2021 across the countries that reported the most deaths</font></p>
+<p><br> <br></p>
+</div>
+<div id="comparing-new-deaths-by-different-who-regions" class="section level3">
+<h3>Comparing New Deaths by different WHO regions</h3>
+<pre class="r"><code>covid%&gt;%
+  group_by(who_region)%&gt;%
+  filter(who_region!=&quot;Other&quot;)%&gt;%
+  select(date_reported, new_deaths, who_region)%&gt;%
+  ggplot(aes(x=who_region, y=new_deaths, fill=who_region))+
+  geom_col()+scale_fill_brewer(palette = &quot;Set2&quot;)+
+  labs(title = &quot;Reported deaths by WHO region as of February 11 2021&quot;,
+       x=&quot;WHO region&quot;,
+       y=&quot;New Deaths&quot;)+
+  theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-20-1.png" /><!-- --></p>
+<p><br> <br> <br> <a href="https://v-srinidhi.github.io/group8-finalproject/">Go Home</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
