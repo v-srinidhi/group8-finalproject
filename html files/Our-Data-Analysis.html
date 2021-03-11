@@ -635,7 +635,7 @@ covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</c
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
 <pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
 ## replace the existing scale.</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-8-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p><font size="3" color="blue">The United States had the most cumulative cases, so we decided to plot the number of cases in the US from the beginning of the data collection (01-01-2020) to the most recent data we have (02-11-2021).</font></p>
 <p><br> <br></p>
 </div>
@@ -655,7 +655,7 @@ covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</c
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
 <pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
 ## replace the existing scale.</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-9-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p><font size="3" color="blue">This plot shows us how the cumulative cases have increased for the top 5 countries with the most cumulative cases.</font></p>
 <p><br> <br></p>
 </div>
@@ -701,7 +701,7 @@ covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</c
   labs(title = &quot;Cumulative Cases in the Last 3 Months&quot;, x = &quot;Date Reported&quot;, y = &quot;Cumulative Cases&quot;)+
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
 <pre class="r"><code>covid2 + facet_wrap(~country)</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-12-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p><font size="3" color="blue">This plot shows us how the cumulative cases have increased for the countries that have increased in cumulative cases the fastest. We analyzed the last 3 months.</font></p>
 <p><br> <br></p>
 </div>
@@ -748,7 +748,7 @@ covid$cumulative_cases &lt;- as.numeric(as.character(covid$cumulative_cases))</c
 <pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
 ## replace the existing scale.</code></pre>
 <pre><code>## Warning: Removed 57 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-14-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p><br> <br></p>
 </div>
 </div>
@@ -789,15 +789,14 @@ arrange(desc(new_cases))</code></pre>
        x=&quot;Date&quot;,
        y=&quot;New Cases&quot;)+
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-16-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p><font size="3" color="blue">This plot shows the number of new cases reported on February 11, 2021 across the countries that reported the most cases.</font></p>
 <p><br> <br></p>
 </div>
 <div id="comparing-new-cases-in-different-who-regions" class="section level3">
 <h3>Comparing New Cases in different WHO regions</h3>
 <p><font size="3" color="blue">TThe WHO divides the world into 6 regions: African Region (AFRO), Region of the Americas (AMRO), South-East Asian Region (SEAR), the European Region (EURO), the Eastern Mediterranean Region (EMRO), and the Western Pacific Region (WPRO).</font></p>
-<pre class="r"><code>options(scipen=999) 
-covid%&gt;%
+<pre class="r"><code>covid%&gt;%
   group_by(who_region)%&gt;%
   filter(who_region!=&quot;Other&quot;)%&gt;%
   select(date_reported, new_cases, who_region)%&gt;%
@@ -807,7 +806,7 @@ covid%&gt;%
        x=&quot;WHO Region&quot;,
        y=&quot;New Cases&quot;)+
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-17-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p><br> <br></p>
 </div>
 <div id="countries-with-the-highest-amount-of-new-deaths" class="section level3">
@@ -838,8 +837,7 @@ arrange(desc(new_deaths))</code></pre>
 <h2><strong>New Deaths</strong></h2>
 <div id="how-new-deaths-on-02-11-2021-compare-in-the-top-5-countries" class="section level3">
 <h3>How New Deaths on 02-11-2021 Compare in the Top 5 Countries</h3>
-<pre class="r"><code>options(scipen=999) 
-covid%&gt;%
+<pre class="r"><code>covid%&gt;%
   filter(country==&quot;United States of America&quot;| country==&quot;Mexico&quot;| country==&quot;Brazil&quot; |country==&quot;The United Kingdom&quot;| country==&quot;Germany&quot;)%&gt;%
   filter(date_reported==&quot;2021-02-11&quot;)%&gt;%
   ggplot(aes(x=date_reported, y=new_deaths, group=country, fill=country))+
@@ -848,14 +846,13 @@ covid%&gt;%
        x=&quot;Date&quot;,
        y=&quot;New Deaths&quot;)+
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-19-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p><font size="3" color="blue">This plot shows the number of new deaths reported on February 11, 2021 across the countries that reported the most deaths</font></p>
 <p><br> <br></p>
 </div>
 <div id="comparing-new-deaths-by-different-who-regions" class="section level3">
 <h3>Comparing New Deaths by different WHO regions</h3>
-<pre class="r"><code>options(scipen=999) 
-covid%&gt;%
+<pre class="r"><code>covid%&gt;%
   group_by(who_region)%&gt;%
   filter(who_region!=&quot;Other&quot;)%&gt;%
   select(date_reported, new_deaths, who_region)%&gt;%
@@ -865,7 +862,7 @@ covid%&gt;%
        x=&quot;WHO region&quot;,
        y=&quot;New Deaths&quot;)+
   theme(plot.title = element_text(size = rel(1.26), hjust = 0.5))</code></pre>
-<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-20-1.png" /><!-- --></p>
+<p><img src="Our-Data-Analysis_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p><br> <br> <br> <a href="https://v-srinidhi.github.io/group8-finalproject/">Go Home</a></p>
 </div>
 </div>

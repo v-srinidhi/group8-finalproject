@@ -12,13 +12,41 @@ This Shiny App shows how amounts of COVID-19 cases have changed from the beginni
 
 
 This is the code we used:
-```{r}
+
+```r
 library(tidyverse)
 library(janitor)
 library(shiny)
 library(shinydashboard)
-library(lubridate)
+```
 
+```
+## 
+## Attaching package: 'shinydashboard'
+```
+
+```
+## The following object is masked from 'package:graphics':
+## 
+##     box
+```
+
+```r
+library(lubridate)
+```
+
+```
+## 
+## Attaching package: 'lubridate'
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union
+```
+
+```r
 options(scipen = 999)
 
 covid <- read.csv("Data/WHO-COVID-19-global-data.csv") %>% clean_names()
@@ -59,6 +87,7 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
-
 ```
+
+`<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>`{=html}
 
