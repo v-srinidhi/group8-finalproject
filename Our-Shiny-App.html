@@ -269,6 +269,64 @@ $(document).ready(function () {
 <p>This Shiny App shows how amounts of COVID-19 cases have changed from the beginning of the pandemic to more recently.</p>
 <hr />
 <p>Here is a link to our Shiny App!</p>
+<p><br></p>
+<p>This is the code we used:</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(shiny)
+library(shinydashboard)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;shinydashboard&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     box</code></pre>
+<pre class="r"><code>library(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre class="r"><code>options(scipen = 999)
+
+covid &lt;- read.csv(&quot;Data/WHO-COVID-19-global-data.csv&quot;) %&gt;% clean_names()
+
+covid$date_reported &lt;- lubridate::mdy(covid$date_reported)
+
+covid &lt;- covid %&gt;% mutate_if(is.integer,as.numeric)
+
+covid &lt;- covid %&gt;% 
+  select(date_reported, country, cumulative_cases, cumulative_deaths)
+
+ui &lt;- dashboardPage(skin=&quot;blue&quot;,
+                    dashboardHeader(title = &quot;COVID-19 Information&quot;),
+                    dashboardSidebar(disable = T),
+                    dashboardBody(
+                      fluidRow(
+                        box(title = &quot;Plot Options&quot;, width = 3,
+                            selectInput(&quot;fill&quot;, &quot;Select Country&quot;, choices =unique(covid$country)),
+                            radioButtons(&quot;x&quot;, &quot;Select X Variable&quot;, choices = c(&quot;cumulative_cases&quot;, &quot;cumulative_deaths&quot;), selected = &quot;cumulative_cases&quot;),
+                            box(title = &quot;Disease Abundance&quot;, width = 9,
+                                plotOutput(&quot;plot&quot;, width = &quot;800px&quot;, height = &quot;500px&quot;, click=&quot;plot_click&quot;),
+                                verbatimTextOutput(&quot;info&quot;)
+                            ) 
+                        ) 
+                      )
+                    ) 
+)
+
+server &lt;- function(input, output, session) { 
+  
+  output$plot &lt;- renderPlot({
+    covid %&gt;% 
+      filter(country==input$fill) %&gt;% 
+      ggplot(aes_string(x = &quot;date_reported&quot;, y = input$x, fill=input$x)) + 
+      geom_col()+
+      labs(x=&quot;Date reported&quot;)
+  })
+}
+
+shinyApp(ui, server)</code></pre>
+<p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div></p>
 
 
 
