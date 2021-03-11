@@ -1,10 +1,11 @@
+server.R
 
 rsconnect::setAccountInfo(name='may1520',
                           token='E2C9F1F6E0AD2CCB0D842FDF433B09A1',
                           secret='JKuZxZOmGz150hIpZiZajBb9bXPJZqBTNrujOjnl')
 
 library(rsconnect)
-rsconnect::deployApp('App - published')
+rsconnect::deployApp('Standalone app.R')
 
 
 library(tidyverse)
